@@ -49,10 +49,11 @@ class UserModel extends BaseModel {
      * @return mixed
      */
     public function updateUser($input) {
+        $validInput = array_map("htmlspecialchars",$input);
         $sql = 'UPDATE users SET 
-                 name = "' . mysqli_real_escape_string(self::$_connection, $input['name']) .'", 
-                 password="'. md5($input['password']) .'"
-                WHERE id = ' . $input['id'];
+                 name = "' . mysqli_real_escape_string(self::$_connection, $validInput['name']) .'", 
+                 password="'. md5($validInput['password']) .'"
+                WHERE id = ' . $validInput['id'];
 
         $user = $this->update($sql);
 
@@ -65,8 +66,9 @@ class UserModel extends BaseModel {
      * @return mixed
      */
     public function insertUser($input) {
+        $validInput = array_map("htmlspecialchars",$input);
         $sql = "INSERT INTO `app_web1`.`users` (`name`, `password`) VALUES (" .
-                "'" . $input['name'] . "', '".md5($input['password'])."')";
+                "'" . $validInput['name'] . "', '".md5($validInput['password'])."')";
 
         $user = $this->insert($sql);
 
